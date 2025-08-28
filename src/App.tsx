@@ -9,12 +9,11 @@ import { CiBoxList } from "react-icons/ci";
 function App() {
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <h1 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          TODO-LIST <CiBoxList size={66} />
-        </h1>
-      </Box>
-      <Grid container spacing={2} sx={{ p: 10 }}>
+      <Box display="flex" alignItems="center" justifyContent="center" >
+        <h1 >  TODO-LIST </h1>
+        <CiBoxList size={66} />
+</Box>
+      <Grid container spacing={2} padding={10}>
         {missionItems.map((missionData) => (
           <Grid key={missionData.id}>
             <MissionsCard data={missionData} />
