@@ -8,12 +8,12 @@ import {
 } from "@mui/material";
 import { missionItems } from "./components/TodoList";
 import { CiBoxList } from "react-icons/ci";
-import { ThemeProvider, useThemeProvider } from "./components/ThemeContext";
+import { ThemeProvider, useMode } from "./components/ThemeContext";
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
 
 const AppContent = () => {
-  const { theme } = useThemeProvider();
+  const { theme } = useMode();
 
   return (
     <MuiThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>

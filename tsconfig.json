@@ -10,7 +10,6 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./src",
     "importsNotUsedAsValues": "remove"
-
   },
   "include": ["src"]
 }

@@ -3,13 +3,13 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: "module",
-    project: "./tsconfig.json"
+    project: "./tsconfig.json",
   },
   plugins: ["@typescript-eslint", "unused-imports"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
   ],
   rules: {
     "unused-imports/no-unused-imports": "error",
@@ -19,9 +19,9 @@ module.exports = {
         vars: "all",
         varsIgnorePattern: "^_",
         args: "after-used",
-        argsIgnorePattern: "^_"
-      }
+        argsIgnorePattern: "^_",
+      },
     ],
-    "@typescript-eslint/no-unused-vars": "off"
-  }
+    "@typescript-eslint/no-unused-vars": "off",
+  },
 };
