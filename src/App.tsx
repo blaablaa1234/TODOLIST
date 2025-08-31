@@ -1,18 +1,28 @@
-import React, { useState } from "react";
 import "./App.css";
 import MissionsCard from "./components/Card";
-import { Grid, Box } from "@mui/material";
+import {
+  Grid,
+  Box,
+  ThemeProvider as MuiThemeProvider,
+  CssBaseline,
+} from "@mui/material";
 import { missionItems } from "./components/TodoList";
-import { MissionData } from "./components/TodoList";
 import { CiBoxList } from "react-icons/ci";
+import { ThemeProvider, useMode } from "./components/ThemeContext";
+import ThemeButton from "./components/ThemeButton";
+import { lightTheme, darkTheme } from "./components/ManageThemes";
 
-function App() {
+const AppContent = () => {
+  const { theme } = useMode();
+
   return (
-    <>
-      <Box display="flex" alignItems="center" justifyContent="center" >
-        <h1 >  TODO-LIST </h1>
+    <MuiThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <CssBaseline />
+      <ThemeButton />
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <h1>TODO-LIST</h1>
         <CiBoxList size={66} />
-</Box>
+      </Box>
       <Grid container spacing={2} padding={10}>
         {missionItems.map((missionData) => (
           <Grid key={missionData.id}>
@@ -20,7 +30,15 @@ function App() {
           </Grid>
         ))}
       </Grid>
-    </>
+    </MuiThemeProvider>
+  );
+};
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 
