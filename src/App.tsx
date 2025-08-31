@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useReducer } from "react";
-import { todoReducer, Todo } from "./components/TodoReducer";
+import { todoReducer } from "./components/TodoReducer";
 import MissionsCard from "./components/Card";
 import {
   Grid,
@@ -11,10 +11,9 @@ import {
 import { missionItems } from "./components/TodoList";
 import { CiBoxList } from "react-icons/ci";
 import { ThemeProvider, useMode } from "./components/ThemeContext";
-
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
-import TodoApp from "./components/Form";
+import TodoForm from "./components/Form";
 
 const AppContent = () => {
   const { theme } = useMode();
@@ -40,7 +39,7 @@ const AppContent = () => {
         </div>
         <CiBoxList size={66} />
       </Box>
-      <TodoApp dispatch={dispatch} />
+      <TodoForm dispatch={dispatch} />
       <Grid container spacing={2} padding={10}>
         {todos.map((todo) => (
           <Grid key={todo.id}>

@@ -7,7 +7,7 @@ type FormData = {
   difficulty: number;
 };
 
-const TodoApp = ({ dispatch }: { dispatch: React.Dispatch<any> }) => {
+const TodoForm = ({ dispatch }: { dispatch: React.Dispatch<any> }) => {
   const { register, handleSubmit, reset } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
@@ -49,4 +49,4 @@ const TodoApp = ({ dispatch }: { dispatch: React.Dispatch<any> }) => {
   );
 };
 
-export default TodoApp;
+export default TodoForm;
