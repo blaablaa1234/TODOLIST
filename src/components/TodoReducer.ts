@@ -4,6 +4,9 @@ export type Todo = {
   difficulty: number;
   completed: boolean;
 };
+export type TodoAction =
+  | { type: "ADD_TODO"; payload: Todo }
+  | { type: "TOGGLE_COMPLETE"; payload: number };
 
 export const todoReducer = (state: Todo[], action: any): Todo[] => {
   switch (action.type) {

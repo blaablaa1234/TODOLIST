@@ -85,8 +85,8 @@ body {
   padding: 8px 10px;
   border: none;
   border-radius: 5px;
-  font-size: 10px;
-  margin-left: 40px;
+  display: flex;
+  align-items: center;
   margin-bottom: 6px;
 }
 .addButton {
