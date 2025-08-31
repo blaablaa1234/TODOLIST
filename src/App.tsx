@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.css";
 import MissionsCard from "./components/Card";
 import {
@@ -9,12 +8,12 @@ import {
 } from "@mui/material";
 import { missionItems } from "./components/TodoList";
 import { CiBoxList } from "react-icons/ci";
-import { ThemeProvider, useTheme } from "./components/ThemeContext";
+import { ThemeProvider, useThemeProvider } from "./components/ThemeContext";
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
 
 const AppContent = () => {
-  const { theme } = useTheme();
+  const { theme } = useThemeProvider();
 
   return (
     <MuiThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
