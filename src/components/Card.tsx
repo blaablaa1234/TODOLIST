@@ -2,19 +2,21 @@ import { Card, CardContent, Typography } from "@mui/material";
 import { MissionData } from "./TodoList";
 import { styled } from "@mui/material/styles";
 
+
 interface CardProps {
   data: MissionData;
+  onToggleComplete: (id: number) => void;
 }
-const StyledCard = styled(Card)(({ theme }) => ({
+export const StyledCard = styled(Card)(({ theme }) => ({
   width: 400,
   backgroundColor: "lightblue",
   padding: theme.spacing(2),
   borderRadius: 16,
   boxShadow: theme.shadows[3],
-  height: 130,
+  height: 160,
   display: "flex",
 }));
-const MissionsCard: React.FC<CardProps> = ({ data }) => {
+const MissionsCard: React.FC<CardProps> = ({ data, onToggleComplete }) => {
   return (
     <StyledCard>
       <CardContent>
@@ -40,8 +42,16 @@ const MissionsCard: React.FC<CardProps> = ({ data }) => {
             className="card-body"
             sx={{ fontFamily: "Trebuchet MS, sans-serif	" }}
           >
-            <b>Completed:</b> {data.completed.toString()}
+            <b>Completed:</b> {data.completed ? "True" : "False"}
           </Typography>
+          {!data.completed && (
+            <button
+              className="completeButton"
+              onClick={() => onToggleComplete(data.id)}
+            >
+              Mark as completed
+            </button>
+          )}
         </Typography>
       </CardContent>
     </StyledCard>
