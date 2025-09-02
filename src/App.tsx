@@ -84,28 +84,35 @@ const AppContent = () => {
           <Box flex={2}>
             <TodoForm dispatch={dispatch} />
           </Box>
-          <Grid
-            container
-            spacing={2}
-            padding={10}
-            style={{ minHeight: "300px" }}
-          >
-            {todos.length === 0 ? (
-              <Typography variant="h6" style={{ margin: "auto" }}>
-                <h1> No missions yet </h1>
-              </Typography>
-            ) : (
-              todos.map((todo) => (
-                <Grid key={todo.id}>
-                  <MissionsCard
-                    data={todo}
-                    onToggleComplete={handleToggleComplete}
-                    onDeleteRequest={handleDeleteRequest}
-                  />
-                </Grid>
-              ))
-            )}
-          </Grid>
+          <Box flex={1}>
+            <Grid
+              container
+              spacing={2}
+              padding={10}
+              sx={{
+                minHeight: "300px",
+                width: "100%",
+                justifyContent: todos.length === 0 ? "center" : "flex-start",
+                transition: "all 0.3s ease",
+              }}
+            >
+              {todos.length === 0 ? (
+                <Typography variant="h6" style={{ margin: "auto" }}>
+                  <h1> No missions yet </h1>
+                </Typography>
+              ) : (
+                todos.map((todo) => (
+                  <Grid key={todo.id}>
+                    <MissionsCard
+                      data={todo}
+                      onToggleComplete={handleToggleComplete}
+                      onDeleteRequest={handleDeleteRequest}
+                    />
+                  </Grid>
+                ))
+              )}
+            </Grid>
+          </Box>
         </Box>
         <Dialog
           open={deleteState.isModalOpen}
