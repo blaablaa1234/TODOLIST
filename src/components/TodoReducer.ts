@@ -4,11 +4,13 @@ export type Todo = {
   difficulty: number;
   completed: boolean;
 };
+
 export type TodoAction =
   | { type: "ADD_TODO"; payload: Todo }
-  | { type: "TOGGLE_COMPLETE"; payload: number };
+  | { type: "TOGGLE_COMPLETE"; payload: number }
+  | { type: "DELETE_TODO"; payload: number };
 
-export const todoReducer = (state: Todo[], action: any): Todo[] => {
+export const todoReducer = (state: Todo[], action: TodoAction): Todo[] => {
   switch (action.type) {
     case "ADD_TODO":
       return [...state, action.payload];
@@ -16,6 +18,8 @@ export const todoReducer = (state: Todo[], action: any): Todo[] => {
       return state.map((todo) =>
         todo.id === action.payload ? { ...todo, completed: true } : todo
       );
+    case "DELETE_TODO":
+      return state.filter((todo) => todo.id !== action.payload);
     default:
       return state;
   }
