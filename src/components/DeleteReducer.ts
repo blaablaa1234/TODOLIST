@@ -7,7 +7,7 @@ export type DeleteState = {
   error: string | null;
 };
 
-export type DeleteAction =
+export type ModalReducer =
   | { type: "OPEN_MODAL"; payload: MissionData }
   | { type: "CLOSE_MODAL" }
   | { type: "DELETE_START" }
@@ -23,7 +23,7 @@ export const initialDeleteState: DeleteState = {
 
 const deleteReducer = (
   state: DeleteState,
-  action: DeleteAction
+  action: ModalReducer
 ): DeleteState => {
   switch (action.type) {
     case "OPEN_MODAL":
