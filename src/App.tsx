@@ -8,41 +8,56 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import { todoReducer } from "./components/TodoReducer";
+import { todoReducer } from "./reducers/TodoReducer";
 import { missionItems } from "./components/TodoList";
 import { ThemeProvider, useMode } from "./components/ThemeContext";
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
 import TodoForm from "./components/Form";
-import deleteReducer, { initialDeleteState } from "./components/DeleteReducer";
+import deleteReducer, { initialDeleteState } from "./reducers/ModalReducer";
 import { MissionData } from "./components/TodoList";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./components/DeleteModal";
+import EditModal from "./EditModal";
 
 const AppContent = () => {
   const { theme } = useMode();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [todos, dispatch] = useReducer(todoReducer, missionItems);
-  const [deleteState, deleteDispatch] = useReducer(
+  const [deletingId, setDeletingId] = React.useState<number | null>(null);
+  const [editItem, setEditItem] = React.useState<MissionData | null>(null);
+  const [deleteState, dispatchModalAction] = useReducer(
     deleteReducer,
     initialDeleteState
   );
+  const handleEditRequest = (item: MissionData) => {
+    setEditItem(item);
+  };
 
   const handleToggleComplete = (id: number) => {
     dispatch({ type: "TOGGLE_COMPLETE", payload: id });
   };
 
   const handleDeleteRequest = (item: MissionData) => {
-    deleteDispatch({ type: "OPEN_MODAL", payload: item });
+    dispatchModalAction({ type: "OPEN_MODAL", payload: item });
   };
 
   const handleDeleteConfirm = () => {
     if (!deleteState.itemToDelete) return;
     const id = deleteState.itemToDelete.id;
 
-    dispatch({ type: "DELETE_TODO", payload: id });
-    deleteDispatch({ type: "DELETE_SUCCESS" });
-    deleteDispatch({ type: "CLOSE_MODAL" });
-    setSnackbarOpen(true);
+    setDeletingId(id);
+
+    setTimeout(() => {
+      try {
+        dispatch({ type: "DELETE_TODO", payload: id });
+        dispatchModalAction({ type: "DELETE_SUCCESS" });
+        dispatchModalAction({ type: "CLOSE_MODAL" });
+        setSnackbarOpen(true);
+        setDeletingId(null);
+      } catch (error) {
+        console.error("Failed to delete:", error);
+      }
+    }, 300);
   };
 
   return (
@@ -85,6 +100,7 @@ const AppContent = () => {
                       data={todo}
                       onToggleComplete={handleToggleComplete}
                       onDeleteRequest={handleDeleteRequest}
+                      onEditRequest={handleEditRequest}
                     />
                   </Grid>
                 ))
@@ -94,10 +110,12 @@ const AppContent = () => {
         </Box>
 
         <DeleteModal
-          deleteState={deleteState}
-          deleteDispatch={deleteDispatch}
+          isOpen={deleteState.isModalOpen}
+          itemTitle={deleteState.itemToDelete?.title}
+          onCloseModal={() => dispatchModalAction({ type: "CLOSE_MODAL" })}
           onConfirmDelete={handleDeleteConfirm}
         />
+
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={3000}
