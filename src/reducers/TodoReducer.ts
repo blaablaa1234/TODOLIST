@@ -8,7 +8,8 @@ export type Todo = {
 export type TodoAction =
   | { type: "ADD_TODO"; payload: Todo }
   | { type: "TOGGLE_COMPLETE"; payload: number }
-  | { type: "DELETE_TODO"; payload: number };
+  | { type: "DELETE_TODO"; payload: number }
+  | { type: "EDIT_TODO"; payload: Todo };
 
 export const todoReducer = (state: Todo[], action: TodoAction): Todo[] => {
   switch (action.type) {
@@ -20,6 +21,11 @@ export const todoReducer = (state: Todo[], action: TodoAction): Todo[] => {
       );
     case "DELETE_TODO":
       return state.filter((todo) => todo.id !== action.payload);
+    case "EDIT_TODO":
+      return state.map((todo) =>
+        todo.id === action.payload.id ? action.payload : todo
+      );
+
     default:
       return state;
   }

@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -18,15 +17,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  width: 100vw;
   min-height: 100vh;
 }
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -44,7 +39,6 @@ h1 {
     background-color: #f9f9f9;
   }
 }
-
 body {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -56,41 +50,4 @@ body {
   position: absolute;
   top: 100px;
   left: 50px;
-}
-.form {
-  max-width: 400px;
-  margin-left: 1000px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #cde7f3;
-  margin-top: 30px;
-  display: flex;
-}
-.completeButton {
-  background-color: #000000;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-left: 150px;
-  margin-bottom: 30px;
-}
-.input {
-  background-color: #fff6f6;
-  color: rgb(0, 0, 0);
-  padding: 8px 10px;
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.addButton {
-  margin-left: 40px;
-  border-radius: 5px;
-  width: 50px;
 }
