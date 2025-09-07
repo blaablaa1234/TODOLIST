@@ -17,7 +17,7 @@ import TodoForm from "./components/Form";
 import deleteReducer, { initialDeleteState } from "./reducers/ModalReducer";
 import { MissionData } from "./components/TodoList";
 import DeleteModal from "./components/DeleteModal";
-import EditModal from "./EditModal";
+import EditModal from "./components/EditModal";
 
 const AppContent = () => {
   const { theme } = useMode();
@@ -31,6 +31,10 @@ const AppContent = () => {
   );
   const handleEditRequest = (item: MissionData) => {
     setEditItem(item);
+  };
+  const handleSaveEdit = (updatedItem: MissionData) => {
+    dispatch({ type: "EDIT_TODO", payload: updatedItem });
+    setEditItem(null);
   };
 
   const handleToggleComplete = (id: number) => {
@@ -122,6 +126,11 @@ const AppContent = () => {
           onClose={() => setSnackbarOpen(false)}
           message="✅ Mission deleted!"
         />
+        <EditModal
+          item={editItem}
+          onClose={() => setEditItem(null)}
+          onSave={handleSaveEdit}
+        />
       </Box>
     </MuiThemeProvider>
   );
@@ -134,5 +143,4 @@ function App() {
     </ThemeProvider>
   );
 }
-
 export default App;

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Todo, TodoAction } from "./TodoReducer";
+import { Todo, TodoAction } from "../reducers/TodoReducer";
 import { LuLayoutList } from "react-icons/lu";
 import { Box, TextField, Button, Paper, useTheme } from "@mui/material";
 
