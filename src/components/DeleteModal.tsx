@@ -6,10 +6,8 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  ThemeProvider as MuiThemeProvider,
 } from "@mui/material";
-import { lightTheme, darkTheme } from "./ManageThemes";
-import { useMode } from "./ThemeContext";
+import { useMode } from "../contexts/ModeContext";
 
 interface DeleteModalProps {
   isOpen: boolean;
@@ -24,26 +22,24 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   onCloseModal,
   onConfirmDelete,
 }) => {
-  const { theme } = useMode();
+  const { mode } = useMode();
 
   return (
-    <MuiThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-      <Dialog open={isOpen} onClose={onCloseModal}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete the mission? <br />
-            <b>"{itemTitle}"</b>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onCloseModal}>Cancel</Button>
-          <Button color="error" onClick={onConfirmDelete}>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </MuiThemeProvider>
+    <Dialog open={isOpen} onClose={onCloseModal}>
+      <DialogTitle>Confirm Delete</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to delete the mission? <br />
+          <b>"{itemTitle}"</b>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onCloseModal}>Cancel</Button>
+        <Button color="error" onClick={onConfirmDelete}>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

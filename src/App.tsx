@@ -10,20 +10,19 @@ import {
 } from "@mui/material";
 import { todoReducer } from "./reducers/TodoReducer";
 import { missionItems } from "./components/TodoList";
-import { ThemeProvider, useMode } from "./components/ThemeContext";
+import { ModeProvider, useMode } from "./contexts/ModeContext";
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
 import TodoForm from "./components/Form";
 import deleteReducer, { initialDeleteState } from "./reducers/ModalReducer";
 import { MissionData } from "./components/TodoList";
 import DeleteModal from "./components/DeleteModal";
-import EditModal from "./EditModal";
+import EditModal from "./components/EditModal";
 
 const AppContent = () => {
-  const { theme } = useMode();
+  const { mode } = useMode();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [todos, dispatch] = useReducer(todoReducer, missionItems);
-  const [deletingId, setDeletingId] = React.useState<number | null>(null);
   const [editItem, setEditItem] = React.useState<MissionData | null>(null);
   const [deleteState, dispatchModalAction] = useReducer(
     deleteReducer,
@@ -31,6 +30,10 @@ const AppContent = () => {
   );
   const handleEditRequest = (item: MissionData) => {
     setEditItem(item);
+  };
+  const handleSaveEdit = (updatedItem: MissionData) => {
+    dispatch({ type: "EDIT_TODO", payload: updatedItem });
+    setEditItem(null);
   };
 
   const handleToggleComplete = (id: number) => {
@@ -45,26 +48,20 @@ const AppContent = () => {
     if (!deleteState.itemToDelete) return;
     const id = deleteState.itemToDelete.id;
 
-    setDeletingId(id);
-
-    setTimeout(() => {
-      try {
-        dispatch({ type: "DELETE_TODO", payload: id });
-        dispatchModalAction({ type: "DELETE_SUCCESS" });
-        dispatchModalAction({ type: "CLOSE_MODAL" });
-        setSnackbarOpen(true);
-        setDeletingId(null);
-      } catch (error) {
-        console.error("Failed to delete:", error);
-      }
-    }, 300);
+    try {
+      dispatch({ type: "DELETE_TODO", payload: id });
+      dispatchModalAction({ type: "CLOSE_MODAL" });
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
   };
 
   return (
-    <MuiThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+    <MuiThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
       <CssBaseline />
       <ThemeButton />
-      <Box display="flex" flexDirection="column" height="100vh">
+      <Box display="flex" flexDirection="column">
         <Box flex={1} overflow="auto">
           <Box
             display="flex"
@@ -122,6 +119,11 @@ const AppContent = () => {
           onClose={() => setSnackbarOpen(false)}
           message="✅ Mission deleted!"
         />
+        <EditModal
+          item={editItem}
+          onClose={() => setEditItem(null)}
+          onSave={handleSaveEdit}
+        />
       </Box>
     </MuiThemeProvider>
   );
@@ -129,10 +131,9 @@ const AppContent = () => {
 
 function App() {
   return (
-    <ThemeProvider>
+    <ModeProvider>
       <AppContent />
-    </ThemeProvider>
+    </ModeProvider>
   );
 }
-
 export default App;

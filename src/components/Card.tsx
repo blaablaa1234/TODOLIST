@@ -8,6 +8,7 @@ export interface CardProps {
   onToggleComplete: (id: number) => void;
   onDeleteRequest: (item: MissionData) => void;
   isDeleting?: boolean;
+  onEditRequest: (item: MissionData) => void;
 }
 
 export const StyledCard = styled(Card)(({ theme }) => ({
@@ -26,6 +27,7 @@ const MissionsCard: React.FC<CardProps> = ({
   onToggleComplete,
   onDeleteRequest,
   isDeleting,
+  onEditRequest,
 }) => {
   return (
     <StyledCard id={`card-${data.id}`} className={isDeleting ? "fade-out" : ""}>
@@ -70,6 +72,9 @@ const MissionsCard: React.FC<CardProps> = ({
               Mark as completed
             </Button>
           )}
+          <Button onClick={() => onEditRequest(data)} color="info">
+            Edit
+          </Button>
         </div>
       </CardContent>
     </StyledCard>

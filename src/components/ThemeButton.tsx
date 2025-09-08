@@ -1,13 +1,12 @@
-import { useMode } from "./ThemeContext";
+import { useMode } from "../contexts/ModeContext";
 
 const LIGHT_SWITCH_ON_ICON = "/lightswitch-on.png";
 const LIGHT_SWITCH_OFF_ICON = "/lightswitch-off.png";
 
 const ThemeButton = () => {
-  const { theme, toggleTheme } = useMode();
+  const { mode, toggleTheme } = useMode();
 
-  const image =
-    theme === "light" ? LIGHT_SWITCH_ON_ICON : LIGHT_SWITCH_OFF_ICON;
+  const image = mode === "light" ? LIGHT_SWITCH_ON_ICON : LIGHT_SWITCH_OFF_ICON;
 
   return (
     <div
