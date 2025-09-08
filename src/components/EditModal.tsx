@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { MissionData } from "./TodoList";
+import { MIN_DIFFICULTY, MAX_DIFFICULTY } from "./constants";
 
 interface EditProps {
   item: MissionData | null;
@@ -16,25 +17,22 @@ interface EditProps {
 }
 
 const EditModal: React.FC<EditProps> = ({ item, onClose, onSave }) => {
-const MIN_DIFFICULTY = 1;
-const MAX_DIFFICULTY = 10;
-const [title, setTitle] = useState("");
-const [difficulty, setDifficulty] = useState<number>(MIN_DIFFICULTY);
+  const [title, setTitle] = useState("");
+  const [difficulty, setDifficulty] = useState<number>(MIN_DIFFICULTY);
 
-const isValidDifficulty =
-  difficulty >= MIN_DIFFICULTY &&
-  difficulty <= MAX_DIFFICULTY &&
-  Number.isInteger(difficulty);
+  const isValidDifficulty =
+    difficulty >= MIN_DIFFICULTY &&
+    difficulty <= MAX_DIFFICULTY &&
+    Number.isInteger(difficulty);
 
   const isFormValid = title.trim() !== "" && isValidDifficulty;
 
-useEffect(() => {
+  useEffect(() => {
     if (item) {
       setTitle(item.title);
       setDifficulty(item.difficulty);
     }
   }, [item]);
-
 
   const handleSave = () => {
     if (item && isFormValid) {
@@ -59,7 +57,7 @@ useEffect(() => {
           type="number"
           value={difficulty}
           onChange={(e) => setDifficulty(Number(e.target.value))}
-          inputProps={{ min: 1, max: 10 }}
+          inputProps={{ min: MIN_DIFFICULTY, max: MAX_DIFFICULTY }}
           margin="dense"
           error={!isValidDifficulty}
           helperText={

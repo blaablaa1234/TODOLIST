@@ -8,7 +8,6 @@ import {
   Button,
   ThemeProvider as MuiThemeProvider,
 } from "@mui/material";
-import { lightTheme, darkTheme } from "./ManageThemes";
 import { useMode } from "./ThemeContext";
 
 interface DeleteModalProps {
@@ -27,23 +26,21 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   const { mode } = useMode();
 
   return (
-
-      <Dialog open={isOpen} onClose={onCloseModal}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete the mission? <br />
-            <b>"{itemTitle}"</b>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onCloseModal}>Cancel</Button>
-          <Button color="error" onClick={onConfirmDelete}>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+    <Dialog open={isOpen} onClose={onCloseModal}>
+      <DialogTitle>Confirm Delete</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to delete the mission? <br />
+          <b>"{itemTitle}"</b>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onCloseModal}>Cancel</Button>
+        <Button color="error" onClick={onConfirmDelete}>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

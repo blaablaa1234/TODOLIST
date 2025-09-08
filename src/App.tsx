@@ -45,18 +45,17 @@ const AppContent = () => {
   };
 
   const handleDeleteConfirm = () => {
-  if (!deleteState.itemToDelete) return;
-  const id = deleteState.itemToDelete.id;
+    if (!deleteState.itemToDelete) return;
+    const id = deleteState.itemToDelete.id;
 
-  try {
-    dispatch({ type: "DELETE_TODO", payload: id });
-    dispatchModalAction({ type: "CLOSE_MODAL" });
-    setSnackbarOpen(true);
-  } catch (error) {
-    console.error("Failed to delete:", error);
-  }
-};
-
+    try {
+      dispatch({ type: "DELETE_TODO", payload: id });
+      dispatchModalAction({ type: "CLOSE_MODAL" });
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
 
   return (
     <MuiThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>

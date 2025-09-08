@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Todo, TodoAction } from "../reducers/TodoReducer";
 import { LuLayoutList } from "react-icons/lu";
-import { Box, TextField, Button, Paper, useTheme } from "@mui/material";
+import { Box, TextField, Button, Paper } from "@mui/material";
+import { MIN_DIFFICULTY, MAX_DIFFICULTY } from "./constants";
 
 type FormData = {
   title: string;
@@ -52,7 +53,7 @@ const TodoForm = ({ dispatch }: { dispatch: React.Dispatch<TodoAction> }) => {
             type="number"
             variant="outlined"
             fullWidth
-            inputProps={{ min: 1, max: 10 }}
+            inputProps={{ min: MIN_DIFFICULTY, max: MAX_DIFFICULTY }}
             {...register("difficulty", { required: true })}
           />
           <Button type="submit" variant="contained" color="primary">
