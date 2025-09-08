@@ -6,9 +6,8 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  ThemeProvider as MuiThemeProvider,
 } from "@mui/material";
-import { useMode } from "./ThemeContext";
+import { useMode } from "../contexts/ModeContext";
 
 interface DeleteModalProps {
   isOpen: boolean;

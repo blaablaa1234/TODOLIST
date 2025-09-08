@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { todoReducer } from "./reducers/TodoReducer";
 import { missionItems } from "./components/TodoList";
-import { ModeProvider, useMode } from "./components/ThemeContext";
+import { ModeProvider, useMode } from "./contexts/ModeContext";
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
 import TodoForm from "./components/Form";
@@ -61,7 +61,7 @@ const AppContent = () => {
     <MuiThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
       <CssBaseline />
       <ThemeButton />
-      <Box display="flex" flexDirection="column" height="100vh">
+      <Box display="flex" flexDirection="column">
         <Box flex={1} overflow="auto">
           <Box
             display="flex"
