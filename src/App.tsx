@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { todoReducer } from "./reducers/TodoReducer";
 import { missionItems } from "./components/TodoList";
-import { ThemeProvider, useMode } from "./components/ThemeContext";
+import { ModeProvider, useMode } from "./components/ThemeContext";
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
 import TodoForm from "./components/Form";
@@ -20,10 +20,9 @@ import DeleteModal from "./components/DeleteModal";
 import EditModal from "./components/EditModal";
 
 const AppContent = () => {
-  const { theme } = useMode();
+  const { mode } = useMode();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [todos, dispatch] = useReducer(todoReducer, missionItems);
-  const [deletingId, setDeletingId] = React.useState<number | null>(null);
   const [editItem, setEditItem] = React.useState<MissionData | null>(null);
   const [deleteState, dispatchModalAction] = useReducer(
     deleteReducer,
@@ -46,26 +45,21 @@ const AppContent = () => {
   };
 
   const handleDeleteConfirm = () => {
-    if (!deleteState.itemToDelete) return;
-    const id = deleteState.itemToDelete.id;
+  if (!deleteState.itemToDelete) return;
+  const id = deleteState.itemToDelete.id;
 
-    setDeletingId(id);
+  try {
+    dispatch({ type: "DELETE_TODO", payload: id });
+    dispatchModalAction({ type: "CLOSE_MODAL" });
+    setSnackbarOpen(true);
+  } catch (error) {
+    console.error("Failed to delete:", error);
+  }
+};
 
-    setTimeout(() => {
-      try {
-        dispatch({ type: "DELETE_TODO", payload: id });
-        dispatchModalAction({ type: "DELETE_SUCCESS" });
-        dispatchModalAction({ type: "CLOSE_MODAL" });
-        setSnackbarOpen(true);
-        setDeletingId(null);
-      } catch (error) {
-        console.error("Failed to delete:", error);
-      }
-    }, 300);
-  };
 
   return (
-    <MuiThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+    <MuiThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
       <CssBaseline />
       <ThemeButton />
       <Box display="flex" flexDirection="column" height="100vh">
@@ -138,9 +132,9 @@ const AppContent = () => {
 
 function App() {
   return (
-    <ThemeProvider>
+    <ModeProvider>
       <AppContent />
-    </ThemeProvider>
+    </ModeProvider>
   );
 }
 export default App;

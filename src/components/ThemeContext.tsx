@@ -9,7 +9,7 @@ import {
 export type Mode = "light" | "dark";
 
 interface ThemeContextProps {
-  theme: Mode;
+  mode: Mode;
   toggleTheme: () => void;
 }
 
@@ -17,22 +17,22 @@ export const ThemeContext = createContext<ThemeContextProps | undefined>(
   undefined
 );
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Mode>(() => {
-    const storedTheme = localStorage.getItem("theme");
+export const ModeProvider = ({ children }: { children: ReactNode }) => {
+  const [mode, setTheme] = useState<Mode>(() => {
+    const storedTheme = localStorage.getItem("mode");
     return storedTheme === "dark" ? "dark" : "light";
   });
 
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    localStorage.setItem("mode", mode);
+  }, [mode]);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ mode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

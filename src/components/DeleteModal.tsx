@@ -24,10 +24,10 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   onCloseModal,
   onConfirmDelete,
 }) => {
-  const { theme } = useMode();
+  const { mode } = useMode();
 
   return (
-    <MuiThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+
       <Dialog open={isOpen} onClose={onCloseModal}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
@@ -43,7 +43,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </MuiThemeProvider>
+
   );
 };
 

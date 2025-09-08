@@ -16,18 +16,25 @@ interface EditProps {
 }
 
 const EditModal: React.FC<EditProps> = ({ item, onClose, onSave }) => {
-  const [title, setTitle] = useState("");
-  const [difficulty, setDifficulty] = useState<number>(1);
-  const isValidDifficulty =
-    difficulty >= 1 && difficulty <= 10 && Number.isInteger(difficulty);
+const MIN_DIFFICULTY = 1;
+const MAX_DIFFICULTY = 10;
+const [title, setTitle] = useState("");
+const [difficulty, setDifficulty] = useState<number>(MIN_DIFFICULTY);
+
+const isValidDifficulty =
+  difficulty >= MIN_DIFFICULTY &&
+  difficulty <= MAX_DIFFICULTY &&
+  Number.isInteger(difficulty);
+
   const isFormValid = title.trim() !== "" && isValidDifficulty;
 
-  useEffect(() => {
+useEffect(() => {
     if (item) {
       setTitle(item.title);
       setDifficulty(item.difficulty);
     }
   }, [item]);
+
 
   const handleSave = () => {
     if (item && isFormValid) {
