@@ -23,7 +23,7 @@ async def send_todos(websocket):
             todo = await fetch_todo()
             if todo:
                 await websocket.send(json.dumps(todo))
-            await asyncio.sleep(3)
+            await asyncio.sleep(10)
     except websockets.ConnectionClosed:
         print("Client disconnected.")
 
