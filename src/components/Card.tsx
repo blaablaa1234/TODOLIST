@@ -17,7 +17,7 @@ export const StyledCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: 16,
   boxShadow: theme.shadows[3],
-  height: 160,
+  height: 185,
   display: "flex",
   transition: "opacity 0.3s ease-out, transform 0.3s ease-out",
 }));

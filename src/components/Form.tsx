@@ -1,25 +1,30 @@
 import { useForm } from "react-hook-form";
-import { Todo, TodoAction } from "../reducers/TodoReducer";
 import { LuLayoutList } from "react-icons/lu";
 import { Box, TextField, Button, Paper } from "@mui/material";
 import { MIN_DIFFICULTY, MAX_DIFFICULTY } from "./constants";
+import { MissionData } from "./TodoList";
 
 type FormData = {
   title: string;
   difficulty: number;
 };
 
-const TodoForm = ({ dispatch }: { dispatch: React.Dispatch<TodoAction> }) => {
+interface TodoFormProps {
+  onSubmit: (item: MissionData) => void;
+}
+
+const TodoForm = ({ onSubmit }: TodoFormProps) => {
   const { register, handleSubmit, reset } = useForm<FormData>();
 
-  const onSubmit = (data: FormData) => {
-    const newTodo: Todo = {
+  const handleFormSubmit = (data: FormData) => {
+    const newTodo: MissionData = {
       id: Date.now(),
       title: data.title,
-      difficulty: data.difficulty,
+      difficulty: Number(data.difficulty),
       completed: false,
     };
-    dispatch({ type: "ADD_TODO", payload: newTodo });
+
+    onSubmit(newTodo);
     reset();
   };
 
@@ -40,7 +45,7 @@ const TodoForm = ({ dispatch }: { dispatch: React.Dispatch<TodoAction> }) => {
           Add Mission <LuLayoutList size={34} />
         </h2>
       </Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Box display="flex" flexDirection="column" gap={2}>
           <TextField
             label="Title"

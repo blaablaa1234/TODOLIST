@@ -1,4 +1,11 @@
-import React, { useReducer } from "react";
+import { useState, useReducer } from "react";
+import {
+  addTodo,
+  editTodo,
+  deleteTodo,
+  toggleComplete,
+} from "./components/TodoSlice";
+
 import MissionsCard from "./components/Card";
 import {
   Grid,
@@ -8,36 +15,46 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import { todoReducer } from "./reducers/TodoReducer";
-import { missionItems } from "./components/TodoList";
+
+import deleteReducer, { initialDeleteState } from "./reducers/ModalReducer";
+
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./Store";
+
 import { ModeProvider, useMode } from "./contexts/ModeContext";
 import ThemeButton from "./components/ThemeButton";
 import { lightTheme, darkTheme } from "./components/ManageThemes";
 import TodoForm from "./components/Form";
-import deleteReducer, { initialDeleteState } from "./reducers/ModalReducer";
-import { MissionData } from "./components/TodoList";
 import DeleteModal from "./components/DeleteModal";
 import EditModal from "./components/EditModal";
+import ConnectionToWebSocket from "../socket/ConnectionToWebsocket";
+
+import { MissionData } from "./components/TodoList";
+import InitTodos from "./components/InitTodos";
 
 const AppContent = () => {
   const { mode } = useMode();
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [todos, dispatch] = useReducer(todoReducer, missionItems);
-  const [editItem, setEditItem] = React.useState<MissionData | null>(null);
+  const dispatch = useDispatch();
+
+  const todos = useSelector((state: RootState) => state.todos);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [editItem, setEditItem] = useState<MissionData | null>(null);
   const [deleteState, dispatchModalAction] = useReducer(
     deleteReducer,
     initialDeleteState
   );
+
+  const handleAdd = (item: MissionData) => {
+    dispatch(addTodo(item));
+  };
+
   const handleEditRequest = (item: MissionData) => {
     setEditItem(item);
   };
-  const handleSaveEdit = (updatedItem: MissionData) => {
-    dispatch({ type: "EDIT_TODO", payload: updatedItem });
-    setEditItem(null);
-  };
 
-  const handleToggleComplete = (id: number) => {
-    dispatch({ type: "TOGGLE_COMPLETE", payload: id });
+  const handleSaveEdit = (updatedItem: MissionData) => {
+    dispatch(editTodo(updatedItem));
+    setEditItem(null);
   };
 
   const handleDeleteRequest = (item: MissionData) => {
@@ -48,19 +65,21 @@ const AppContent = () => {
     if (!deleteState.itemToDelete) return;
     const id = deleteState.itemToDelete.id;
 
-    try {
-      dispatch({ type: "DELETE_TODO", payload: id });
-      dispatchModalAction({ type: "CLOSE_MODAL" });
-      setSnackbarOpen(true);
-    } catch (error) {
-      console.error("Failed to delete:", error);
-    }
+    dispatch(deleteTodo(id));
+    dispatchModalAction({ type: "CLOSE_MODAL" });
+    setSnackbarOpen(true);
+  };
+
+  const handleToggleComplete = (id: number) => {
+    dispatch(toggleComplete(id));
   };
 
   return (
     <MuiThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
       <CssBaseline />
       <ThemeButton />
+      <ConnectionToWebSocket />
+      <InitTodos />
       <Box display="flex" flexDirection="column">
         <Box flex={1} overflow="auto">
           <Box
@@ -71,9 +90,11 @@ const AppContent = () => {
           >
             <h1>TODO-LIST</h1>
           </Box>
+
           <Box flex={2}>
-            <TodoForm dispatch={dispatch} />
+            <TodoForm onSubmit={handleAdd} />
           </Box>
+
           <Box flex={1}>
             <Grid
               container
@@ -119,6 +140,7 @@ const AppContent = () => {
           onClose={() => setSnackbarOpen(false)}
           message="✅ Mission deleted!"
         />
+
         <EditModal
           item={editItem}
           onClose={() => setEditItem(null)}
@@ -129,11 +151,12 @@ const AppContent = () => {
   );
 };
 
-function App() {
+const App = () => {
   return (
     <ModeProvider>
       <AppContent />
     </ModeProvider>
   );
-}
+};
+
 export default App;
