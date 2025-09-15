@@ -1,10 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
-import todoReducer from "./components/TodoSlice";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; 
+import todosReducer from "./components/TodoSlice";
+import { combineReducers } from "redux";
+
+const rootReducer = combineReducers({
+  todos: todosReducer,
+});
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["todos"],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    todos: todoReducer,
-  },
+  reducer: persistedReducer,
 });
+
+export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+
