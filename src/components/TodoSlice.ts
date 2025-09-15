@@ -43,7 +43,7 @@ export const todoSlice = createSlice({
         saveToLocalStorage(state);
       }
     },
-    importFromWebSocket(state, action: PayloadAction<MissionData>) {
+    addTodoFromWebSocket(state, action: PayloadAction<MissionData>) {
       state.push(action.payload);
       saveToLocalStorage(state);
     },
@@ -54,6 +54,6 @@ export const {
   toggleComplete,
   deleteTodo,
   editTodo,
-  importFromWebSocket,
+  addTodoFromWebSocket,
 } = todoSlice.actions;
 export default todoSlice.reducer;

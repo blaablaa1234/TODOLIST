@@ -27,14 +27,16 @@ import { lightTheme, darkTheme } from "./components/ManageThemes";
 import TodoForm from "./components/Form";
 import DeleteModal from "./components/DeleteModal";
 import EditModal from "./components/EditModal";
-import ConnectionToWebSocket from "../socket/ConnectionToWebsocket";
 
 import { MissionData } from "./components/TodoList";
-import InitTodos from "./components/InitTodos";
+import useInitTodos from "./components/InitTodos";
+import useWebSocket from "./components/ConnectionToWebsocket";
 
 const AppContent = () => {
   const { mode } = useMode();
   const dispatch = useDispatch();
+  useInitTodos();
+  useWebSocket();
 
   const todos = useSelector((state: RootState) => state.todos);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -65,9 +67,13 @@ const AppContent = () => {
     if (!deleteState.itemToDelete) return;
     const id = deleteState.itemToDelete.id;
 
-    dispatch(deleteTodo(id));
-    dispatchModalAction({ type: "CLOSE_MODAL" });
-    setSnackbarOpen(true);
+    try {
+      dispatch(deleteTodo(id));
+      dispatchModalAction({ type: "CLOSE_MODAL" });
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Failed to delete the mission:", error);
+    }
   };
 
   const handleToggleComplete = (id: number) => {
@@ -78,8 +84,6 @@ const AppContent = () => {
     <MuiThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
       <CssBaseline />
       <ThemeButton />
-      <ConnectionToWebSocket />
-      <InitTodos />
       <Box display="flex" flexDirection="column">
         <Box flex={1} overflow="auto">
           <Box

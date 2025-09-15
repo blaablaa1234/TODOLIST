@@ -1,25 +1,26 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { importFromWebSocket } from "../src/components/TodoSlice";
-import { RootState } from "../src/Store";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addTodoFromWebSocket } from "../components/TodoSlice";
+import { store } from "../Store";
 
-const ConnectionToWebSocket: React.FC = () => {
+const useWebSocket = () => {
   const dispatch = useDispatch();
-  const todos = useSelector((state: RootState) => state.todos);
 
   useEffect(() => {
     const wsUrl = "ws://localhost:5555";
-
     const ws = new WebSocket(wsUrl);
 
     ws.onmessage = (event) => {
       try {
+        const state = store.getState();
+        const todos = state.todos;
+
         if (todos.length >= 12) {
           console.warn(" Reached max todos (12)");
           return;
         }
 
-        let todo = JSON.parse(event.data);
+        const todo = JSON.parse(event.data);
 
         const preparedTodo = {
           id: Date.now() + Math.floor(Math.random() * 1000),
@@ -31,23 +32,21 @@ const ConnectionToWebSocket: React.FC = () => {
           completed: false,
         };
 
-        dispatch(importFromWebSocket(preparedTodo));
-        console.log(" Added todo ", preparedTodo);
+        dispatch(addTodoFromWebSocket(preparedTodo));
+        console.log(" Added todo from WebSocket:", preparedTodo);
       } catch (e) {
-        console.error(" Failed to parse todo ", e);
+        console.error(" Failed to parse todo from WebSocket:", e);
       }
     };
 
     ws.onerror = (err) => {
-      console.error("WebSocket error:", err);
+      console.error(" WebSocket error:", err);
     };
 
     return () => {
       ws.close();
     };
-  }, [dispatch, todos]);
-
-  return null;
+  }, [dispatch]);
 };
 
-export default ConnectionToWebSocket;
+export default useWebSocket;
